@@ -9,8 +9,13 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 
 exports.signup = async (req, res) => {
-    const { username,email, password } = req.body;
-  
+    const { username,email, password,role } = req.body;
+    const certificatePath=req.file?.path  || '';
+    const iscertificateVerified=certificatePath? true:false;
+    if (role === 'expert' && !iscertificateVerified) {
+       return res.status(400).json(new APIResponse(null, 'Certificate is required for expert role').toJson());
+    }
+
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) return res.status(400).json(new APIResponse(null, 'Username already exists').toJson());
@@ -21,7 +26,9 @@ exports.signup = async (req, res) => {
         username,
         email,
         password: hashedPassword,
-        isVerified: false 
+        isVerified: false,
+        role,
+        iscertificateVerified,
       });
   
       const verificationToken = newUser.generateVerificationToken();
