@@ -22,7 +22,7 @@ const sendVerificationEmail = async (user, token) => {
     to: user.email,
     subject: 'Verify your email',
     html: htmlTemplate
-  });
+  })
 };
 
 module.exports = {sendVerificationEmail}

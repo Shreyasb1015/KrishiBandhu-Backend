@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const crypto = require('crypto');
+const { type } = require('os');
 
 const userSchema = new Schema({
-  username: {
+  name: {
     type: String,
     required: true,
-    unique: true
   },
   email: {
     type: String,
@@ -23,12 +23,15 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'expert'],
-    default: 'user'
+    enum: ['Farmer', 'Expert'],
+    default: 'Farmer'
   },
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  certificate: {
+    type: String
   },
   iscertificateVerified:{
     type: Boolean,
